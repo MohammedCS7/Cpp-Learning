@@ -1,15 +1,16 @@
 #include <iostream>
 using namespace std;
-int ReadNumber()
+int ReadPositveNumber(string message)
 {
-    int number;
-
-    cout << "Enter a Number : " << endl;
-    cin >> number;
-
+    int number=0;
+    do
+    {
+        cout << message << endl;
+        cin >> number;
+    } while (number < 0);
     return number;
 }
-long long GetFactorial(int number)
+unsigned long long GetFactorial(int number)
 {
     long long factorial = 1;
     for (int i = 2; i <= number; i++)
@@ -23,6 +24,6 @@ void PrintFactorial(long long factorial)
     cout << "The Factorial is : " << factorial << endl;
 }
 int main() {
-    PrintFactorial(GetFactorial(ReadNumber()));
+    PrintFactorial(GetFactorial(ReadPositveNumber("Enter Number N : ")));
     return 0;
 }
