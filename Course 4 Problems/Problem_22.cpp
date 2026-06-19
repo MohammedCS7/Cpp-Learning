@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 using namespace std;
-void ReadTriBaseSides(float& base , float& sides)
+void ReadTriangleData(float& base , float& sides)
 {
     cout << "Enter the Base : " << endl;
     cin >> base;
@@ -21,7 +21,7 @@ void PrintArea(float area)
 }
 int main() {
     float base, sides;
-    ReadTriBaseSides(base, sides);
+    ReadTriangleData(base, sides);
     PrintArea(CalcCircleArea(base,sides));
     return 0;
 }

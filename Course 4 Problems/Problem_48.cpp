@@ -9,13 +9,13 @@ float ReadPositiveNumber(string message)
     {
         cout << message << endl;
         cin >> number;
-    } while (number < 0);
+    } while (number <= 0);
     return number;
 }
 
-int CalcMonthlyPayment(float loanAmount, int months)
+float CalcMonthlyPayment(float loanAmount, int months)
 {
-    return loanAmount / months;
+    return loanAmount / (float)months;
 }
 int main() {
     float loanAmount = ReadPositiveNumber("Enter Loan Amount : ");

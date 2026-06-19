@@ -33,16 +33,16 @@ float GetResult(Calculator calc)
     {
     case Operations::Add :
         return calc.number1 + calc.number2;
-        break;
+ 
     case Operations::Substract :
         return calc.number1 - calc.number2;
-        break;
+        
     case  Operations::Multiply :
         return calc.number1 * calc.number2;
-        break;
+      
     case Operations::Divide :
         return calc.number1 / calc.number2;
-        break;
+       
     default :
         return 0;
     }

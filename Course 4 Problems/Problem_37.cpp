@@ -20,10 +20,13 @@ int SumUntilMinus99()
     do
     {
         number = ReadNumber("Enter Number : "+to_string(counter));
-        counter++;
-        if(number != -99)
-        sum += number;
-    } while (number != -99);
+        
+        if (number != -99)
+        {
+            sum += number;
+            counter++;
+        }
+        } while (number != -99);
     return sum;
 }
 void PrintSum(int sum)

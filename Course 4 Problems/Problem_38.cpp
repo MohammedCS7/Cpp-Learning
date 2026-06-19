@@ -20,7 +20,7 @@ bool isPrime(int number)
     if (number % 2 == 0 || number == 1)
         return false;
     int half = number / 2;
-    for (int i = 3; i <= half; i++)
+    for (int i = 3; i <= half; i+=2)
     {
         if (number % i == 0)
             return false;

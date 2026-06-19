@@ -15,7 +15,7 @@ float ReadPositiveNumber(string message)
 
 int CalcLoanMonths(float loanAmount, float monthlyPayment)
 {
-    return round(loanAmount / monthlyPayment);
+    return loanAmount / monthlyPayment;
 }
 int main() {
     float loanAmount = ReadPositiveNumber("Enter Loan Amount : ");
