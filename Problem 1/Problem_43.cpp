@@ -21,7 +21,7 @@ int ReadPositiveNumber(string message)
 
 int GetRemainder(int seconds, int time)
 {
-    return seconds -= time;
+    return seconds % time;
 }
 
 int CalcDaysBySeconds(int seconds)
@@ -34,7 +34,7 @@ int CalcSecFromDays(int days)
     return days * 86400;
 }
 
-int CalcRemainingHoursBySeconds(int seconds)
+int CalcHoursBySeconds(int seconds)
 {
    return seconds / 3600;
      
@@ -45,7 +45,7 @@ int CalcSecFromHours(int hours)
     return hours*3600;
 }
 
-int CalcRemainingMinutesBySeconds(int seconds)
+int CalcMinutesBySeconds(int seconds)
 {
     return seconds / 60;
 }
@@ -58,18 +58,20 @@ int CalcSecFromMinutes(int minutes)
 Duration CalcDuration(int seconds)
 {
     Duration time;
-
+    int remainder;
 
     time.days = CalcDaysBySeconds(seconds);
 
+    remainder = GetRemainder(seconds, 86400);
+    time.hours = CalcHoursBySeconds(remainder);
+    
+    remainder = GetRemainder(remainder, 3600);
 
-    time.hours = CalcRemainingHoursBySeconds(GetRemainder(seconds, CalcSecFromDays(time.days)));
+    time.minutes = CalcMinutesBySeconds(remainder);
 
+    remainder = GetRemainder(remainder, 60);
 
-    time.minutes = CalcRemainingMinutesBySeconds(GetRemainder(GetRemainder(seconds, CalcSecFromDays(time.days)),CalcSecFromHours(time.hours)));
-
-
-    time.seconds = GetRemainder(GetRemainder(GetRemainder(seconds, CalcSecFromDays(time.days)), CalcSecFromHours(time.hours)),CalcSecFromMinutes(time.minutes));
+    time.seconds = remainder;
 
     return time;
 }
