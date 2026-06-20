@@ -1,20 +1,20 @@
 #include <iostream>
 using namespace std;
 
-unsigned long long ReadPositiveNumber(string message)
+int ReadPositiveNumber(string message)
 {
-    unsigned long long number;
+    int number;
 
     do
     {
         cout << message << endl;
         cin >> number;
-    } while (number < 0);
+    } while (number <= 0);
 
     return number;
 }
 
-int CalcSumOfDigits(unsigned long long number)
+int CalcSumOfDigits(int number)
 {
     int sum = 0;
     int remainder=0;
