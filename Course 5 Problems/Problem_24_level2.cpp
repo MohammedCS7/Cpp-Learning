@@ -24,7 +24,7 @@ int RandomNumber(int from, int to)
 
 void FillArrayRand(int arr[100], int length)
 {
-    for (int i = 1; i < length; i++)
+    for (int i = 0; i < length; i++)
     {
         arr[i] = RandomNumber(1,100);
     }
@@ -33,7 +33,7 @@ void FillArrayRand(int arr[100], int length)
 int GetMax(int arr[100], int length)
 {
     int max = arr[0];
-    for (int i = 0; i < length; i++)
+    for (int i = 1; i < length; i++)
     {
         if (arr[i] > max)
             max = arr[i];
