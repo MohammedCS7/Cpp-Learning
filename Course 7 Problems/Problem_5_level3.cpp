@@ -57,9 +57,9 @@ int main() {
 
     int arr[3][3], sum[3];
     FillThreeByThreeArrayWithRand(arr);
-    cout << "The following is a 3x3 random matrix : " << endl;
+    cout << "The Following is a 3x3 random matrix : " << endl;
     PrintRandArray(arr);
-    cout << "The following are the sum of each col in the matrix : " << endl;
+    cout << "The Following are the sum of each col in the matrix : " << endl;
     CalcColsSum(arr, sum);
     PrintColsSum(sum);
     return 0;
