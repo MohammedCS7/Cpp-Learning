@@ -1,0 +1,270 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+enum enDateState { Before = -1, Equal = 0, After = 1 };
+
+struct Date
+{
+    int day;
+    int month;
+    int year;
+};
+
+struct Period
+{
+    Date StartDate;
+    Date EndDate;
+};
+
+int ReadPositiveNumber(string message)
+{
+    int num;
+    do
+    {
+        cout << message;
+        cin >> num;
+        while (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            cout << message;
+            cin >> num;
+        }
+    } while (num < 0);
+    return num;
+}
+
+int ReadNumberInRange(string message, int from, int to)
+{
+    int num;
+    do
+    {
+        cout << message;
+        cin >> num;
+    } while (num < from || num > to);
+    return num;
+}
+
+bool IsLeapYear(int year)
+{
+    return ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0));
+}
+
+int GetMonthDays(int year, int month)
+{
+    int monthsDays[13] = { 0,31,0,31,30,31,30,31,31,30,31,30,31 };
+    return month == 2 ? IsLeapYear(year) ? 29 : 28 : monthsDays[month];
+}
+
+int GetYearDays(int year)
+{
+    return IsLeapYear(year) ? 366 : 365;
+}
+
+int ReadYear()
+{
+    return ReadPositiveNumber("Please enter a year : ");
+}
+
+int ReadMonth()
+{
+    return ReadNumberInRange("Please enter a month : ", 1, 12);
+}
+
+int ReadDay(int year, int month)
+{
+    return ReadNumberInRange("Please enter a day : ", 1, GetMonthDays(year, month));
+}
+
+bool IsLastDay(Date date)
+{
+    return (date.day == GetMonthDays(date.year, date.month));
+}
+
+bool IsLastMonth(Date date)
+{
+    return date.month == 12;
+}
+
+Date ReadDate()
+{
+    Date date;
+    date.year = ReadYear();
+    date.month = ReadMonth();
+    date.day = ReadDay(date.year, date.month);
+    cout << "\n\n";
+    return date;
+}
+
+vector <string> SplitString(string dateLine,string delim)
+{
+    vector <string> parts;
+    string part = "";
+    int pos;
+    if (dateLine.empty())
+        return parts;
+    while ((pos = dateLine.find(delim)) != string::npos)
+    {
+        part = dateLine.substr(0, pos);
+        if (part != "")
+        {
+            parts.push_back(part);
+        }
+        dateLine.erase(0, pos + delim.length());
+    }
+    if (dateLine != "")
+        parts.push_back(dateLine);
+    return parts;
+}
+
+string ReadStringDate()
+{
+    string dateLine;
+    cout << "Enter a Date (dd/mm/yyyy) : ";
+    getline(cin >> ws, dateLine);
+    return dateLine;
+}
+
+bool IsValidDate(Date date)
+{
+    return (date.year > 0 && date.month <= 12 && date.month > 0 && date.day <= GetMonthDays(date.year, date.month) && date.day > 0);
+}
+
+//Problem 63 Level 4 :
+
+Date StringToDate(string dateLine)
+{
+    Date date;
+
+    string dates[3];
+
+    int datesIndex = 0;
+
+    int pos = 0;
+
+    while ((pos = dateLine.find("/")) != string::npos)
+    {
+        dates[datesIndex++] = dateLine.substr(0, pos);
+        dateLine.erase(0, pos + 1);
+    }
+
+    dates[datesIndex] = dateLine;
+
+    date.day = stoi(dates[0]);
+    date.month = stoi(dates[1]);
+    date.year = stoi(dates[2]);
+
+    return date;
+}
+
+string FormatDate(string dateLine, string format = "", string delim = "")
+{
+    Date date = StringToDate(dateLine);
+    vector <string> formattedSigns = SplitString(format, delim);
+    string formattedDate;
+    if (format.empty() && delim.empty())
+    {
+        return "Day:" + to_string(date.day) + "," + " Month:" + to_string(date.month) + "," + " Year:" + to_string(date.year);
+    }
+    if (formattedSigns[0] == "yyyy")
+    {
+        formattedDate += to_string(date.year) + delim;
+        if (formattedSigns[1] == "mm")
+        {
+            formattedDate += to_string(date.month) + delim;
+            formattedDate += to_string(date.day);
+        }
+        else
+        {
+            formattedDate += to_string(date.day) + delim;
+            formattedDate += to_string(date.month);
+        }
+    }
+    else if (formattedSigns[0] == "mm")
+    {
+        formattedDate += to_string(date.month) + delim;
+        formattedDate += to_string(date.day) + delim;
+        formattedDate += to_string(date.year);
+    }
+    else if (formattedSigns[0] == "dd")
+    {
+        formattedDate += to_string(date.day) + delim;
+        formattedDate += to_string(date.month) + delim;
+        formattedDate += to_string(date.year);
+    }
+    else
+        return "";
+    return formattedDate;
+}
+
+string FormatDateAnotherSolve(string dateLine, string format = "")
+{
+    Date date = StringToDate(dateLine);
+    string formattedDate = "";
+    //Padding 4 spaces to prevent out of bound error
+    format.append("    ");
+    int length = format.length() - 4;
+    for (int i = 0; i < length;)
+    {
+        if (format.substr(i, 2) == "mm")
+        {
+            formattedDate += to_string(date.month);
+            i += 2;
+        }
+        else if (format.substr(i, 2) == "dd")
+        {
+            formattedDate += to_string(date.day);
+            i += 2;
+        }
+        else if (format.substr(i, 4) == "yyyy")
+        {
+            formattedDate += to_string(date.year);
+            i += 4;
+        }
+        else
+        {
+            formattedDate += format[i];
+            i++;
+        }
+        
+    }
+    return formattedDate;
+}
+
+//Problem 64 Level 4 :
+
+string DateToString(Date date)
+{
+    return to_string(date.day) + '/' + to_string(date.month) + '/' + to_string(date.year);
+}
+
+void PrintDate(Date date)
+{
+    printf("\nDay:%d,Month:%d,Year:%d\n", date.day, date.month, date.year);
+}
+
+int main() {
+
+    string dateLine = ReadStringDate();
+
+    cout << "\n\n";
+    cout << FormatDateAnotherSolve(dateLine, "dd/mm/yyyy");
+    cout << "\n\n";
+    cout << FormatDateAnotherSolve(dateLine, "yyyy/dd/mm");
+    cout << "\n\n";
+    cout << FormatDateAnotherSolve(dateLine, "mm/dd/yyyy");
+    cout << "\n\n";
+    cout << FormatDateAnotherSolve(dateLine, "mm-dd-yyyy");
+    cout << "\n\n";
+    cout << FormatDateAnotherSolve(dateLine, "dd-mm-yyyy");
+    cout << "\n\n";
+    cout << FormatDateAnotherSolve(dateLine,"Day:dd, Month:mm, Year:yyyy");
+    cout << endl;
+
+  
+
+
+    return 0;
+}
